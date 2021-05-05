@@ -1,5 +1,8 @@
 ## Py-Models-Parser
 
+![badge1](https://img.shields.io/pypi/v/py-models-parser) ![badge2](https://img.shields.io/pypi/l/py-models-parser) ![badge3](https://img.shields.io/pypi/pyversions/py-models-parser) ![workflow](https://github.com/xnuinside/py-models-parser/actions/workflows/main.yml/badge.svg)
+
+
 It's as second Parser that done by me, first is a https://github.com/xnuinside/simple-ddl-parser for SQL DDL with different dialects.
 Py-Models-Parser supports now ORM Sqlalchemy, Gino, Tortoise; Pydantic, Python Enum models & in nearest feature I plan to add Dataclasses & pure pyton classes. And next will be added other ORMs models.
 
