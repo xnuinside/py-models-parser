@@ -1,0 +1,8 @@
+models.py
+*.pyc
+py_models_parser/__pycache__
+py_models_parser/grammars/__pycache__
+dist/
+.pytest_cache/
+.vscode/
+models/

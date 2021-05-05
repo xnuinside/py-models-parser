@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "py-models-parser"
+version = "0.1.0"
+description = ""
+authors = ["Iuliia Volkova <xnuinside@gmail.com>"]
+license = "MIT"
+readme = "docs/README.rst"
+homepage = "https://github.com/xnuinside/omymodels"
+repository = "https://github.com/xnuinside/omymodels"
+classifiers = [
+    "Programming Language :: PL/SQL",
+    "Programming Language :: SQL",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Utilities",
+    "Topic :: Software Development :: Code Generators",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+parsimonious = "^0.8.1"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+pre-commit = "^2.12.1"
+black = "^21.5b0"
+twine = "^3.4.1"
+m2r = "^0.2.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
