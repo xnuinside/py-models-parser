@@ -18,13 +18,11 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.6"
 parsimonious = "^0.8.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
-pre-commit = "^2.12.1"
-black = "^21.5b0"
 twine = "^3.4.1"
 m2r = "^0.2.1"
 
