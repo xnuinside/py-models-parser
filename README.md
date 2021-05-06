@@ -4,10 +4,10 @@
 
 
 It's as second Parser that done by me, first is a https://github.com/xnuinside/simple-ddl-parser for SQL DDL with different dialects.
-Py-Models-Parser supports now ORM Sqlalchemy, Gino, Tortoise; Pydantic, Python Enum models & in nearest feature I plan to add Dataclasses & pure pyton classes. And next will be added other ORMs models.
+Py-Models-Parser supports now ORM Sqlalchemy, Gino, Tortoise; Pydantic, Python Enum models, Dataclasses & in nearest feature I plan to add pure pyton classes. And next will be added other ORMs models.
 
+Py-Models-Parser written with PEG parser and it's python implementation - parsimonious. It's pretty new and I did not cover all possible test cases, so if you will have an issue  - please just open an issue in this case with example, I will fix it as soon as possible.
 
-Py-Models-Parser written with PEG parser and it's python implementation - parsimonious.
 Py-Models-Parser take as input different Python code with Models and provide output in standard form:
 
 ```python
@@ -55,7 +55,7 @@ You can parse models from python string:
 
 ```python
 
-from py_models_parser.core import parse
+from py_models_parser import parse
 
 models_str =  """from gino import Gino
 
@@ -74,6 +74,19 @@ class OrderItems(db.Model):
 result = parse(models_str)
 
 ```
+
+or just provide the path to file:
+
+```python
+
+    from py_models_parser import parse_from_file
+
+
+    file_path = "path/to/your/models.py"
+    # for example: tests/data/dataclass_defaults.py
+    result = parse_from_file(file_path)
+```
+
 It will produce the result:
 
 ```python
@@ -124,10 +137,15 @@ It will produce the result:
 
 1. Parse from file method
 2. Add cli
-3. Add more tests for supported models (and fix existed not covered cases): Pydantic, Enums, Dataclasses, SQLAlchemy Models, GinoORM models, TortoiseORM models 
+3. Add more tests for supported models (and fix existed not covered cases): Pydantic, Enums, Dataclasses, SQLAlchemy Models, GinoORM models, TortoiseORM models
 4. Add support for pure Python classes
 5. Add support for pure SQLAlchemy Core Tables
 
 ## Changelog
-**v0.1.0**
+**v0.2.0**
+1. Added support for Dataclasses
+2. Added parse_from_file method
+3. Added correct work with types with comma inside, like: Union[dict, list] or Union[dict, list, tuple, anything] 
+
+**v0.1.1**
 1. Added base parser logic & tests for Pydantic, Enums, SQLAlchemy Models, GinoORM models, TortoiseORM models 

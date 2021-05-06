@@ -1,4 +1,4 @@
-from py_models_parser.core import parse
+from py_models_parser import parse
 
 
 def test_multiple_class_defs():
@@ -77,11 +77,17 @@ def test_multiple_class_defs():
                     "properties": {},
                     "type": "db.Integer()",
                 },
-                {"default": None, "name": "class User4", "type": ""},
-                {"default": None, "name": "id", "properties": {}, "type": "db.Integer"},
             ],
             "name": "Users",
             "parents": ["db.Model"],
+            "properties": {"table_name": "'users'"},
+        },
+        {
+            "attrs": [
+                {"default": None, "name": "id", "properties": {}, "type": "db.Integer"}
+            ],
+            "name": "User4",
+            "parents": [],
             "properties": {"table_name": "'users4'"},
         },
         {

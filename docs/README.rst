@@ -2,10 +2,29 @@
 Py-Models-Parser
 ----------------
 
-It's as second Parser that done by me, first is a https://github.com/xnuinside/simple-ddl-parser for SQL DDL with different dialects.
-Py-Models-Parser supports now ORM Sqlalchemy, Gino, Tortoise; Pydantic, Python Enum models & in nearest feature I plan to add Dataclasses & pure pyton classes. And next will be added other ORMs models.
 
-Py-Models-Parser written with PEG parser and it's python implementation - parsimonious.
+.. image:: https://img.shields.io/pypi/v/py-models-parser
+   :target: https://img.shields.io/pypi/v/py-models-parser
+   :alt: badge1
+ 
+.. image:: https://img.shields.io/pypi/l/py-models-parser
+   :target: https://img.shields.io/pypi/l/py-models-parser
+   :alt: badge2
+ 
+.. image:: https://img.shields.io/pypi/pyversions/py-models-parser
+   :target: https://img.shields.io/pypi/pyversions/py-models-parser
+   :alt: badge3
+ 
+.. image:: https://github.com/xnuinside/py-models-parser/actions/workflows/main.yml/badge.svg
+   :target: https://github.com/xnuinside/py-models-parser/actions/workflows/main.yml/badge.svg
+   :alt: workflow
+
+
+It's as second Parser that done by me, first is a https://github.com/xnuinside/simple-ddl-parser for SQL DDL with different dialects.
+Py-Models-Parser supports now ORM Sqlalchemy, Gino, Tortoise; Pydantic, Python Enum models, Dataclasses & in nearest feature I plan to add pure pyton classes. And next will be added other ORMs models.
+
+Py-Models-Parser written with PEG parser and it's python implementation - parsimonious. It's pretty new and I did not cover all possible test cases, so if you will have an issue  - please just open an issue in this case with example, I will fix it as soon as possible.
+
 Py-Models-Parser take as input different Python code with Models and provide output in standard form:
 
 .. code-block:: python
@@ -55,7 +74,7 @@ You can parse models from python string:
 .. code-block:: python
 
 
-   from py_models_parser.core import parse
+   from py_models_parser import parse
 
    models_str =  """from gino import Gino
 
@@ -72,6 +91,18 @@ You can parse models from python string:
 
        """
    result = parse(models_str)
+
+or just provide the path to file:
+
+.. code-block:: python
+
+
+       from py_models_parser import parse_from_file
+
+
+       file_path = "path/to/your/models.py"
+       # for example: tests/data/dataclass_defaults.py
+       result = parse_from_file(file_path)
 
 It will produce the result:
 
@@ -124,14 +155,21 @@ TODO: in next Release
 
 #. Parse from file method
 #. Add cli
-#. Add more tests for supported models (and fix existed not covered cases): Pydantic, Enums, Dataclasses, SQLAlchemy Models, GinoORM models, TortoiseORM models 
+#. Add more tests for supported models (and fix existed not covered cases): Pydantic, Enums, Dataclasses, SQLAlchemy Models, GinoORM models, TortoiseORM models
 #. Add support for pure Python classes
 #. Add support for pure SQLAlchemy Core Tables
 
 Changelog
 ---------
 
-**v0.1.0**
+**v0.2.0**
+
+
+#. Added support for Dataclasses
+#. Added parse_from_file method
+#. Added correct work with types with comma inside, like: Union[dict, list] or Union[dict, list, tuple, anything] 
+
+**v0.1.1**
 
 
 #. Added base parser logic & tests for Pydantic, Enums, SQLAlchemy Models, GinoORM models, TortoiseORM models 

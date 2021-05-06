@@ -6,3 +6,4 @@ dist/
 .pytest_cache/
 .vscode/
 models/
+test.py
