@@ -38,54 +38,75 @@ def test_multiple_class_defs():
         id = db.Column
     """
     result = parse(models_str)
-    excepted = [{'attrs': [{'default': None,
-             'name': 'id',
-             'properties': {'autoincrement': 'True', 'primary_key': 'True'},
-             'type': 'db.Integer()'},
-            {'default': None,
-             'name': 'db',
-             'properties': {},
-             'type': 'db.String()'},
-            {'default': None,
-             'name': 'created_at',
-             'properties': {},
-             'type': 'db.TIMESTAMP()'},
-            {'default': None,
-             'name': 'updated_at',
-             'properties': {},
-             'type': 'db.TIMESTAMP()'},
-            {'default': None,
-             'name': 'country_code',
-             'properties': {},
-             'type': 'db.Integer()'},
-            {'default': None,
-             'name': 'default_language',
-             'properties': {},
-             'type': 'db.Integer()'}],
-  'name': 'Users',
-  'parents': ['db.Model'],
-  'properties': {'table_name': "'users'"}},
- {'attrs': [{'default': None,
-             'name': 'id',
-             'properties': {},
-             'type': 'db.Integer'}],
-  'name': 'User4',
-  'parents': [],
-  'properties': {'table_name': "'users4'"}},
- {'attrs': [{'default': None,
-             'name': 'id',
-             'properties': {},
-             'type': 'db.Integer'}],
-  'name': 'User3',
-  'parents': [],
-  'properties': {'table_name': "'users3'"}},
- {'attrs': [{'default': 'db.Column',
-             'name': 'id',
-             'properties': {},
-             'type': None}],
-  'name': 'Users2',
-  'parents': ['db.Model'],
-  'properties': {'table_name': "'users2'"}}]
+    excepted = [
+        {
+            "attrs": [
+                {
+                    "default": None,
+                    "name": "id",
+                    "properties": {"autoincrement": "True", "primary_key": "True"},
+                    "type": "db.Integer()",
+                },
+                {
+                    "default": None,
+                    "name": "db",
+                    "properties": {},
+                    "type": "db.String()",
+                },
+                {
+                    "default": None,
+                    "name": "created_at",
+                    "properties": {},
+                    "type": "db.TIMESTAMP()",
+                },
+                {
+                    "default": None,
+                    "name": "updated_at",
+                    "properties": {},
+                    "type": "db.TIMESTAMP()",
+                },
+                {
+                    "default": None,
+                    "name": "country_code",
+                    "properties": {},
+                    "type": "db.Integer()",
+                },
+                {
+                    "default": None,
+                    "name": "default_language",
+                    "properties": {},
+                    "type": "db.Integer()",
+                },
+            ],
+            "name": "Users",
+            "parents": ["db.Model"],
+            "properties": {"table_name": "'users'"},
+        },
+        {
+            "attrs": [
+                {"default": None, "name": "id", "properties": {}, "type": "db.Integer"}
+            ],
+            "name": "User4",
+            "parents": [],
+            "properties": {"table_name": "'users4'"},
+        },
+        {
+            "attrs": [
+                {"default": None, "name": "id", "properties": {}, "type": "db.Integer"}
+            ],
+            "name": "User3",
+            "parents": [],
+            "properties": {"table_name": "'users3'"},
+        },
+        {
+            "attrs": [
+                {"default": "db.Column", "name": "id", "properties": {}, "type": None}
+            ],
+            "name": "Users2",
+            "parents": ["db.Model"],
+            "properties": {"table_name": "'users2'"},
+        },
+    ]
     assert result == excepted
 
 

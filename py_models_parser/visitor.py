@@ -6,7 +6,7 @@ from parsimonious.nodes import NodeVisitor
 class Visitor(NodeVisitor):
     def visit_class_name(self, node, visited_children):
         """get class name"""
-        class_name = node.children[1].children[0].text.strip().replace(':', '')
+        class_name = node.children[1].children[0].text.strip().replace(":", "")
         return {"name": class_name}
 
     def visit_class_def(self, node, visited_children):
@@ -138,7 +138,7 @@ class Visitor(NodeVisitor):
                 final_child.update(child)
             elif isinstance(child, list):
                 for i in child:
-                    final_child= self.process_chld(i, final_child)
+                    final_child = self.process_chld(i, final_child)
         return final_child
 
     def visit_expr(self, node, visited_children):
@@ -148,8 +148,12 @@ class Visitor(NodeVisitor):
         for i in visited_children:
             final_child = {"name": None, "attrs": [], "parents": [], "properties": {}}
             final_child = self.process_chld(i, final_child)
-            if final_child.get('name') and final_child['name'] == 'Meta' and children_values:
-                for attr in final_child['attrs']:
+            if (
+                final_child.get("name")
+                and final_child["name"] == "Meta"
+                and children_values
+            ):
+                for attr in final_child["attrs"]:
                     children_values[n]["properties"][attr["name"]] = (
                         attr["type"] or attr["default"]
                     )

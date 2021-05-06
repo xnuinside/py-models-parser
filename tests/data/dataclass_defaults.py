@@ -1,13 +1,13 @@
-from enum import Enum
 import datetime
-from typing import List, Union
 from dataclasses import dataclass
+from enum import Enum
+from typing import List, Union
 
 
 class MaterialType(str, Enum):
 
-    article = 'article'
-    video = 'video'
+    article = "article"
+    video = "video"
 
 
 @dataclass
