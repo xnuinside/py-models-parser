@@ -6,7 +6,7 @@ from parsimonious.nodes import NodeVisitor
 class Visitor(NodeVisitor):
     def visit_class_name(self, node, visited_children):
         """get class name"""
-        class_name = node.children[1].children[0].text.strip()
+        class_name = node.children[1].children[0].text.strip().replace(':', '')
         return {"name": class_name}
 
     def visit_class_def(self, node, visited_children):
@@ -58,7 +58,6 @@ class Visitor(NodeVisitor):
                 text = text.split(",")
 
                 text = self.clean_up_cases_with_inner_pars(text)
-                print(text)
                 if i == "Field":
                     # for tortoise orm
                     split_by_field = base_text.split("Field")[0].split(".")
@@ -122,38 +121,41 @@ class Visitor(NodeVisitor):
                         attr["attr"]["properties"] = children[-1][-1]["properties"]
                         if children[-1][-1]["type"] is not None:
                             attr["attr"]["type"] = children[-1][-1]["type"]
-
         return attr
 
-    def process_chld(self, child, final_child, meta):
+    def process_chld(self, child, final_child):
         if "attr" in child and child["attr"]["name"]:
             if "tablename" in child["attr"]["name"]:
                 final_child["properties"]["table_name"] = child["attr"]["default"]
-            elif "table_args" in child["attr"]["name"] or meta:
+            elif "table_args" in child["attr"]["name"]:
                 final_child["properties"][child["attr"]["name"]] = (
                     child["attr"]["type"] or child["attr"]["default"]
                 )
             else:
-                if "class Meta" == child["attr"]["name"]:
-                    return final_child, True
                 final_child["attrs"].append(child["attr"])
         else:
             if isinstance(child, dict):
                 final_child.update(child)
             elif isinstance(child, list):
                 for i in child:
-                    final_child, meta = self.process_chld(i, final_child, meta)
-        return final_child, meta
+                    final_child= self.process_chld(i, final_child)
+        return final_child
 
     def visit_expr(self, node, visited_children):
         """Makes a dict of the section (as key) and the key/value pairs."""
         children_values = []
+        n = -1
         for i in visited_children:
-            meta = False
             final_child = {"name": None, "attrs": [], "parents": [], "properties": {}}
-            final_child, _ = self.process_chld(i, final_child, meta)
-            if final_child["name"]:
+            final_child = self.process_chld(i, final_child)
+            if final_child.get('name') and final_child['name'] == 'Meta' and children_values:
+                for attr in final_child['attrs']:
+                    children_values[n]["properties"][attr["name"]] = (
+                        attr["type"] or attr["default"]
+                    )
+            elif final_child.get("name"):
                 children_values.append(final_child)
+                n += 1
             if "attr" in final_child:
                 del final_child["attr"]
         return children_values

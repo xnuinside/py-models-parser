@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "py-models-parser"
-version = "0.1.0"
+version = "0.2.0"
 description = "Parser for Different Python Models (Pydantic, Enums, ORMs: Tortoise, SqlAlchemy, GinoORM) to extract information about columns(attrs), model, table args,etc in one format."
 authors = ["Iuliia Volkova <xnuinside@gmail.com>"]
 license = "MIT"

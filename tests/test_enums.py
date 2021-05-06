@@ -1,4 +1,4 @@
-from py_models_parser.core import parse
+from py_models_parser import parse
 
 
 def test_simple_enum():

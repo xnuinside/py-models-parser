@@ -1,2 +1,7 @@
+**v0.2.0**
+1. Added support for Dataclasses
+2. Added parse_from_file method
+3. Added correct work with types with comma inside, like: Union[dict, list] or Union[dict, list, tuple, anything] 
+
 **v0.1.1**
 1. Added base parser logic & tests for Pydantic, Enums, SQLAlchemy Models, GinoORM models, TortoiseORM models 
