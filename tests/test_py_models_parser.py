@@ -41,12 +41,12 @@ def test_parse_from_file_gino():
         {
             "attrs": [
                 {
-                    "default": "'article'",
+                    "default": '"article"',
                     "name": "article",
                     "properties": {},
                     "type": None,
                 },
-                {"default": "'video'", "name": "video", "properties": {}, "type": None},
+                {"default": '"video"', "name": "video", "properties": {}, "type": None},
             ],
             "name": "MaterialType",
             "parents": ["Enum"],
@@ -105,7 +105,7 @@ def test_parse_from_file_gino():
             ],
             "name": "Material",
             "parents": ["db.Model"],
-            "properties": {"table_name": "'material'"},
+            "properties": {"table_name": '"material"'},
         },
         {
             "attrs": [
@@ -130,45 +130,45 @@ def test_parse_from_file_gino():
             ],
             "name": "Author",
             "parents": ["db.Model"],
-            "properties": {"table_name": "'author'"},
+            "properties": {"table_name": '"author"'},
         },
         {
             "attrs": [
                 {
                     "default": None,
                     "name": "category",
-                    "properties": {"foreign_key": "'author.id'"},
+                    "properties": {"foreign_key": '"author.id"'},
                     "type": "db.Integer()",
                 },
                 {
                     "default": None,
                     "name": "material",
-                    "properties": {"foreign_key": "'material.id'"},
+                    "properties": {"foreign_key": '"material.id"'},
                     "type": "db.Integer()",
                 },
             ],
             "name": "MaterialAuthors",
             "parents": ["db.Model"],
-            "properties": {"table_name": "'material_authors'"},
+            "properties": {"table_name": '"material_authors"'},
         },
         {
             "attrs": [
                 {
                     "default": None,
                     "name": "category",
-                    "properties": {"foreign_key": "'platform.id'"},
+                    "properties": {"foreign_key": '"platform.id"'},
                     "type": "db.Integer()",
                 },
                 {
                     "default": None,
                     "name": "material",
-                    "properties": {"foreign_key": "'material.id'"},
+                    "properties": {"foreign_key": '"material.id"'},
                     "type": "db.Integer()",
                 },
             ],
             "name": "MaterialPlatforms",
             "parents": ["db.Model"],
-            "properties": {"table_name": "'material_platforms'"},
+            "properties": {"table_name": '"material_platforms"'},
         },
         {
             "attrs": [
@@ -193,26 +193,26 @@ def test_parse_from_file_gino():
             ],
             "name": "Platform",
             "parents": ["db.Model"],
-            "properties": {"table_name": "'platform'"},
+            "properties": {"table_name": '"platform"'},
         },
         {
             "attrs": [
                 {
                     "default": None,
                     "name": "category",
-                    "properties": {"foreign_key": "'category.id'"},
+                    "properties": {"foreign_key": '"category.id"'},
                     "type": "db.Integer()",
                 },
                 {
                     "default": None,
                     "name": "material",
-                    "properties": {"foreign_key": "'material.id'"},
+                    "properties": {"foreign_key": '"material.id"'},
                     "type": "db.Integer()",
                 },
             ],
             "name": "MaterialCategories",
             "parents": ["db.Model"],
-            "properties": {"table_name": "'material_categories'"},
+            "properties": {"table_name": '"material_categories"'},
         },
         {
             "attrs": [
@@ -249,14 +249,14 @@ def test_parse_from_file_gino():
             ],
             "name": "Category",
             "parents": ["db.Model"],
-            "properties": {"table_name": "'category'"},
+            "properties": {"table_name": '"category"'},
         },
         {
             "attrs": [
                 {
                     "default": None,
                     "name": "category",
-                    "properties": {"foreign_key": "'category.id'"},
+                    "properties": {"foreign_key": '"category.id"'},
                     "type": "db.Integer()",
                 },
                 {
@@ -286,7 +286,7 @@ def test_parse_from_file_gino():
             ],
             "name": "ContentFilters",
             "parents": ["db.Model"],
-            "properties": {"table_name": "'content_filters'"},
+            "properties": {"table_name": '"content_filters"'},
         },
     ]
     assert result == expected
@@ -299,12 +299,12 @@ def test_parse_from_file_dataclass():
         {
             "attrs": [
                 {
-                    "default": "'article'",
+                    "default": '"article"',
                     "name": "article",
                     "properties": {},
                     "type": None,
                 },
-                {"default": "'video'", "name": "video", "properties": {}, "type": None},
+                {"default": '"video"', "name": "video", "properties": {}, "type": None},
             ],
             "name": "MaterialType",
             "parents": ["str, Enum"],
