@@ -1,3 +1,7 @@
+**v0.3.0**
+1. Added cli - `pmp` command with args -d, --dump  
+2. Add support for pure Python classes
+
 **v0.2.0**
 1. Added support for Dataclasses
 2. Added parse_from_file method
