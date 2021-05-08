@@ -4,7 +4,19 @@
 
 
 It's as second Parser that done by me, first is a https://github.com/xnuinside/simple-ddl-parser for SQL DDL with different dialects.
-Py-Models-Parser supports now ORM Sqlalchemy, Gino, Tortoise; Pydantic, Python Enum models, Dataclasses & in nearest feature I plan to add pure pyton classes. And next will be added other ORMs models.
+
+Py-Models-Parser can parse & extract information from models:
+
+- Sqlalchemy ORM,
+- Gino ORM,
+- Tortoise ORM,
+- Django ORM Model,
+- Pydantic,
+- Python Enum,
+- Python Dataclasses
+- pure Python Classes
+
+Number of supported models will be increased, check 'TODO' section.
 
 Py-Models-Parser written with PEG parser and it's python implementation - parsimonious. It's pretty new and I did not cover all possible test cases, so if you will have an issue  - please just open an issue in this case with example, I will fix it as soon as possible.
 
@@ -51,7 +63,7 @@ NOTE: it's is a text parser, so it don't import or load your code, parser work w
 
 Library detect automaticaly that type of models you tries to parse. You can check a lot of examples in test/ folder on the GitHub
 
-You can parse models from python string:
+1. You can parse models from python string:
 
 ```python
 
@@ -75,7 +87,7 @@ result = parse(models_str)
 
 ```
 
-or just provide the path to file:
+2. Parse models from file:
 
 ```python
 
@@ -87,7 +99,31 @@ or just provide the path to file:
     result = parse_from_file(file_path)
 ```
 
-It will produce the result:
+3. Parse models from file with command line
+
+```bash
+
+    pmp path_to_models.py 
+
+    # for example: pmp tests/data/dataclass_defaults.py
+
+```
+
+Output from cli can be dumped in 'output_models.json' file - use flag '-d' '--dump' if you want to change target file name, provide it after argument like '-d target_file.json'
+
+```bash
+
+    # example how to dump output from cli
+
+    pmp path_to_models.py -d target_file.json
+
+```
+
+### Output example
+
+You can find a lot of output examples in tests - https://github.com/xnuinside/py-models-parser/tree/main/tests
+
+For model from point 1 (above) library will produce the result:
 
 ```python
 
@@ -132,16 +168,19 @@ It will produce the result:
     ]
 ```
 
-
 ## TODO: in next Release
 
-1. Parse from file method
-2. Add cli
-3. Add more tests for supported models (and fix existed not covered cases): Pydantic, Enums, Dataclasses, SQLAlchemy Models, GinoORM models, TortoiseORM models
-4. Add support for pure Python classes
-5. Add support for pure SQLAlchemy Core Tables
+1. Add more tests for supported models (and fix existed not covered cases): Django ORM, Pydantic, Enums, Dataclasses, SQLAlchemy Models, GinoORM models, TortoiseORM models
+2. Add support for SQLAlchemy Core Tables
+3. Add support for Pony ORM models
+4. Add support for Piccolo ORM models
 
 ## Changelog
+**v0.3.0**
+1. Added cli - `pmp` command with args -d, --dump  
+2. Added support for simple Django ORM models
+3. Added base support for pure Python Classes
+
 **v0.2.0**
 1. Added support for Dataclasses
 2. Added parse_from_file method

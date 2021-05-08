@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Tuple
 
 from parsimonious.nodes import NodeVisitor
 
@@ -47,7 +47,7 @@ class Visitor(NodeVisitor):
         default = None
         not_orm = True
         properties = {}
-        orm_columns = ["Column", "Field", "relationship"]
+        orm_columns = ["Column", "Field", "relationship", "ForeignKey"]
         for i in orm_columns:
             if i in text:
                 not_orm = False
@@ -56,16 +56,15 @@ class Visitor(NodeVisitor):
                 base_text = text
                 text = text[index + 1 : -1]  # noqa E203
                 text = text.split(",")
-
                 text = self.clean_up_cases_with_inner_pars(text)
                 if i == "Field":
-                    # for tortoise orm
-                    split_by_field = base_text.split("Field")[0].split(".")
-                    if len(split_by_field) == 2:
-                        _type = split_by_field[1]
-                    else:
-                        _type = split_by_field[0]
+                    _type, properties = get_django_info(text, base_text, properties)
                     prop_index = 0
+                elif i == "ForeignKey":
+                    # mean it is a Django model.ForeignKey
+                    _type = "serial"
+                    properties["foreign_key"] = text[0]
+                    prop_index = 1
                 else:
                     prop_index = 1
                     _type = text[0]
@@ -108,12 +107,14 @@ class Visitor(NodeVisitor):
         _type = None
         if "def " in left:
             attr = {"attr": {"name": None, "type": _type, "default": default}}
+
             return attr
         if ":" in left:
             _type = left.split(":")[-1].strip()
             left = left.split(":")[0].strip()
         attr = {"attr": {"name": left, "type": _type, "default": default}}
         for children in visited_children:
+
             if isinstance(children, list):
                 if isinstance(children[-1], list):
                     if "default" in children[-1][-1]:
@@ -121,20 +122,33 @@ class Visitor(NodeVisitor):
                         attr["attr"]["properties"] = children[-1][-1]["properties"]
                         if children[-1][-1]["type"] is not None:
                             attr["attr"]["type"] = children[-1][-1]["type"]
+                elif isinstance(children[-1], dict) and "type" in children[-1]:
+                    attr["attr"]["type"] = children[-1]["type"]
         return attr
 
     def process_chld(self, child, final_child):
         if "attr" in child and child["attr"]["name"]:
-            if "tablename" in child["attr"]["name"]:
+            # todo: this is a hack, need refactor it
+            if child["attr"]["name"] == "self" and not final_child["properties"].get(
+                "init"
+            ):
+                final_child["properties"]["init"] = []
+            elif "tablename" in child["attr"]["name"]:
                 final_child["properties"]["table_name"] = child["attr"]["default"]
             elif "table_args" in child["attr"]["name"]:
                 final_child["properties"][child["attr"]["name"]] = (
                     child["attr"]["type"] or child["attr"]["default"]
                 )
             else:
-                final_child["attrs"].append(child["attr"])
+                if final_child["properties"].get("init") is not None:
+                    final_child["properties"]["init"].append(child["attr"])
+                else:
+                    final_child["attrs"].append(child["attr"])
         else:
-            if isinstance(child, dict):
+
+            if "attr" in child:
+                final_child = process_no_name_attrs(final_child, child)
+            elif isinstance(child, dict):
                 final_child.update(child)
             elif isinstance(child, list):
                 for i in child:
@@ -162,8 +176,43 @@ class Visitor(NodeVisitor):
                 n += 1
             if "attr" in final_child:
                 del final_child["attr"]
+            if final_child["properties"].get("init") == []:
+                del final_child["properties"]["init"]
+            elif final_child["properties"].get("init"):
+                if not children_values[n]["properties"].get("init"):
+                    children_values[n]["properties"]["init"] = final_child[
+                        "properties"
+                    ]["init"]
+
         return children_values
+
+    def visit_type(self, node, visited_children):
+        _index = node.text.find(":")
+        _type = node.text[_index + 1 :]  # noqa: E203
+        return {"type": _type.strip()}
 
     def generic_visit(self, node, visited_children):
         """The generic visit method."""
         return visited_children or node
+
+
+def process_no_name_attrs(final_child: Dict, child: Dict) -> None:
+    if child["attr"]["default"]:
+        final_child["attrs"][-1]["default"] = child["attr"]["default"]
+        if not final_child["attrs"][-1].get("properties"):
+            final_child["attrs"][-1]["properties"] = {}
+    elif child["attr"]["type"]:
+        final_child["attrs"][-1]["default"] += f':{child["attr"]["type"]}'
+    return final_child
+
+
+def get_django_info(text: list, base_text: str, properties: Dict) -> Tuple:
+    #    for tortoise orm & django orm
+    split_by_field = base_text.split("Field")[0].split(".")
+    if len(split_by_field) == 2:
+        _type = split_by_field[1]
+    else:
+        _type = split_by_field[0]
+    if _type == "ManyToMany":
+        properties["foreign_key"] = text[0]
+    return _type, properties

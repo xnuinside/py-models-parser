@@ -1,3 +1,4 @@
+import json
 import os
 from typing import Dict, List
 
@@ -76,3 +77,8 @@ def parse_from_file(file_path: str) -> List[Dict]:
     with open(file_path, "r") as f:
         models = f.read()
         return parse(models)
+
+
+def dump_result(output: str, file_path: str) -> None:
+    with open(file_path, "w+") as f:
+        json.dump(output, f, indent=1)
