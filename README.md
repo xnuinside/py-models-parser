@@ -10,9 +10,11 @@ Py-Models-Parser can parse & extract information from models:
 - Sqlalchemy ORM,
 - Gino ORM,
 - Tortoise ORM,
+- Django ORM Model,
 - Pydantic,
 - Python Enum,
 - Python Dataclasses
+- pure Python Classes
 
 Number of supported models will be increased, check 'TODO' section.
 
@@ -168,15 +170,21 @@ For model from point 1 (above) library will produce the result:
 
 ## TODO: in next Release
 
-1. Add more tests for supported models (and fix existed not covered cases): Pydantic, Enums, Dataclasses, SQLAlchemy Models, GinoORM models, TortoiseORM models
-2. Add support for pure SQLAlchemy Core Tables
+1. Add more tests for supported models (and fix existed not covered cases): Django ORM, Pydantic, Enums, Dataclasses, SQLAlchemy Models, GinoORM models, TortoiseORM models
+2. Add support for SQLAlchemy Core Tables
 3. Add support for Pony ORM models
+4. Add support for Piccolo ORM models
 
 ## Changelog
+**v0.3.0**
+1. Added cli - `pmp` command with args -d, --dump  
+2. Added support for simple Django ORM models
+3. Added base support for pure Python Classes
+
 **v0.2.0**
 1. Added support for Dataclasses
 2. Added parse_from_file method
-3. Added correct work with types with comma inside, like: Union[dict, list] or Union[dict, list, tuple, anything]
+3. Added correct work with types with comma inside, like: Union[dict, list] or Union[dict, list, tuple, anything] 
 
 **v0.1.1**
 1. Added base parser logic & tests for Pydantic, Enums, SQLAlchemy Models, GinoORM models, TortoiseORM models 

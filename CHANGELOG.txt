@@ -1,6 +1,7 @@
 **v0.3.0**
 1. Added cli - `pmp` command with args -d, --dump  
-2. Add support for pure Python classes
+2. Added support for simple Django ORM models
+3. Added base support for pure Python Classes
 
 **v0.2.0**
 1. Added support for Dataclasses
