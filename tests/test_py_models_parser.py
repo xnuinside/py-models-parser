@@ -1,6 +1,6 @@
 import pathlib
 
-from py_models_parser import parse_from_file
+from py_models_parser import parse, parse_from_file
 from py_models_parser.core import pre_processing
 
 
@@ -491,5 +491,59 @@ def test_parse_from_file_dataclass():
             "parents": [],
             "properties": {},
         },
+    ]
+    assert result == expected
+
+
+def test_symbols_and_tuples_int_return():
+    model = """
+    class ComplexNumber:
+
+        a = 100
+        b = 'b'
+        c: str = 'default'
+
+        def method(self):
+            return 'instance method called', self
+
+        @classmethod
+        def classmethod(cls):
+            return 'class method called', cls , cls, 1
+
+        @staticmethod
+        def staticmethod():
+            return 'static method called'
+
+        def __repr__(self):
+            return 'Pizza(%r)' % self.ingredients
+
+        def __init__(self, ingredients):
+            self.ingredients = ingredients
+
+        def __repr__(self):
+            return f'Pizza({self.ingredients!r})'
+        def area(self):
+            return self.circle_area(self.radius)
+
+        @staticmethod
+        def circle_area(r):
+            return r ** 2 * math.pi
+
+    """
+
+    result = parse(model)
+    expected = [
+        {
+            "attrs": [
+                {"default": "100", "name": "a", "properties": {}, "type": None},
+                {"default": "'b'", "name": "b", "properties": {}, "type": None},
+                {"default": "'default'", "name": "c", "properties": {}, "type": "str"},
+            ],
+            "name": "ComplexNumber",
+            "parents": [],
+            "properties": {
+                "init": [{"default": None, "name": "ingredients", "type": None}]
+            },
+        }
     ]
     assert result == expected

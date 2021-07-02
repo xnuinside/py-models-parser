@@ -1,4 +1,4 @@
 [flake8]
-exclude = .github,.git,__pycache__,docs/source/conf.py,old,build,dist
+exclude = .github,.git,__pycache__,docs/source/conf.py,old,build,dist,test.py
 max-complexity = 10
 max-line-length = 120
