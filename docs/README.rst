@@ -31,6 +31,7 @@ Py-Models-Parser can parse & extract information from models:
 * Django ORM Model,
 * Pydantic,
 * Python Enum,
+* Pony ORM,
 * Python Dataclasses
 * pure Python Classes
 
@@ -199,6 +200,13 @@ TODO: in next Release
 
 Changelog
 ---------
+
+**v0.4.0**
+
+
+#. return tuples (multiple values) is parsed correctly now
+#. symbols like ``*&^%$#!±~``\ §<>` now does not cause any errors
+#. classes without any args does not cause an error anymore
 
 **v0.3.0**
 
