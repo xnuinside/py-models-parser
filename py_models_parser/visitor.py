@@ -1,6 +1,8 @@
-from typing import Dict, Tuple
+from typing import Dict, List, Tuple, Union
 
 from parsimonious.nodes import NodeVisitor
+
+from py_models_parser.parsers.pydal import process_pydal_table_definition
 
 
 class Visitor(NodeVisitor):
@@ -47,10 +49,10 @@ class Visitor(NodeVisitor):
         default = None
         not_orm = True
         properties = {}
-        orm_columns = ["Column", "Field", "relationship", "ForeignKey"]
+        orm_triggers = ["Column", "Field", "relationship", "ForeignKey"]
         pony_orm_fields = ["Required", "Set", "Optional", "PrimaryKey"]
-        orm_columns.extend(pony_orm_fields)
-        for i in orm_columns:
+        orm_triggers.extend(pony_orm_fields)
+        for i in orm_triggers:
             if i in text:
                 not_orm = False
                 # in case of models
@@ -112,6 +114,13 @@ class Visitor(NodeVisitor):
     def visit_right_part(self, node, visited_children):
         return self.extractor(node.text.strip())
 
+    def visit_call_result(self, node, visited_children):
+        value = node.text.strip()
+        if "define_table" in value:
+            # mean this is a pydal method
+            return process_pydal_table_definition(value)
+        return visited_children or node
+
     def visit_attr_def(self, node, visited_children):
         """Makes a dict of the section (as key) and the key/value pairs."""
         left = node.children[1].children[0].children[0].text.strip()
@@ -137,33 +146,34 @@ class Visitor(NodeVisitor):
                     attr["attr"]["type"] = children[-1]["type"]
         return attr
 
-    def process_chld(self, child, final_child):
-        if "attr" in child and child["attr"]["name"]:
-            # todo: this is a hack, need refactor it
-            if child["attr"]["name"] == "self" and not final_child["properties"].get(
-                "init"
-            ):
-                final_child["properties"]["init"] = []
-            elif "tablename" in child["attr"]["name"]:
-                final_child["properties"]["table_name"] = child["attr"]["default"]
-            elif "table_args" in child["attr"]["name"]:
-                final_child["properties"][child["attr"]["name"]] = (
-                    child["attr"]["type"] or child["attr"]["default"]
-                )
-            else:
-                if final_child["properties"].get("init") is not None:
-                    final_child["properties"]["init"].append(child["attr"])
-                else:
-                    final_child["attrs"].append(child["attr"])
+    @staticmethod
+    def _process_attr(attr: Dict, final_item: Dict) -> Dict:
+        # todo: this is a hack, need refactor it
+        if attr["name"] == "self" and not final_item["properties"].get("init"):
+            final_item["properties"]["init"] = []
+        elif "tablename" in attr["name"]:
+            final_item["properties"]["table_name"] = attr["default"]
+        elif "table_args" in attr["name"]:
+            final_item["properties"][attr["name"]] = attr["type"] or attr["default"]
         else:
+            if final_item["properties"].get("init") is not None:
+                final_item["properties"]["init"].append(attr)
+            else:
+                final_item["attrs"].append(attr)
+        return final_item
 
-            if "attr" in child:
-                final_child = process_no_name_attrs(final_child, child)
-            elif isinstance(child, dict):
-                final_child.update(child)
-            elif isinstance(child, list):
-                for i in child:
-                    final_child = self.process_chld(i, final_child)
+    def process_chld(self, child: Union[Dict, List], final_child: Dict) -> Dict:
+        if child:
+            if "attr" in child and child["attr"].get("name"):
+                final_child = self._process_attr(child["attr"], final_child)
+            else:
+                if "attr" in child:
+                    final_child = process_no_name_attrs(final_child, child)
+                elif isinstance(child, dict):
+                    final_child.update(child)
+                elif isinstance(child, list):
+                    for i in child:
+                        final_child = self.process_chld(i, final_child)
         return final_child
 
     def visit_expr(self, node, visited_children):
