@@ -1,5 +1,6 @@
 **v0.5.0**
 1. Added base support for Pydal tables definition
+2. Added support for python list syntax like []
 
 **v0.4.0**
 1. return tuples (multiple values) is parsed correctly now

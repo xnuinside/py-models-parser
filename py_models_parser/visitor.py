@@ -2,6 +2,8 @@ from typing import Dict, List, Tuple, Union
 
 from parsimonious.nodes import NodeVisitor
 
+from py_models_parser.parsers.pydal import process_pydal_table_definition
+
 
 class Visitor(NodeVisitor):
     def visit_class_name(self, node, visited_children):
@@ -116,45 +118,8 @@ class Visitor(NodeVisitor):
         value = node.text.strip()
         if "define_table" in value:
             # mean this is a pydal method
-            return self.process_pydal_table_definition(value)
+            return process_pydal_table_definition(value)
         return visited_children or node
-
-    @staticmethod
-    def process_pydal_table_definition(pydal_def: str) -> Dict:
-        table_def = {
-            "attrs": [],
-            "name": "name",
-            "properties": {},
-        }
-        pydal_def = pydal_def.split("Field(")
-        table_def["name"] = pydal_def[0].split(",")[0].split("define_table(")[1]
-        for column in pydal_def[1:]:
-            column = column.replace(")", "").strip().split(",")
-            column_name = column[0]
-            default = None
-            _type = None
-            properties = {}
-            for num, param in enumerate(column[1:]):
-                param = param.strip().split("=")
-                if len(param) > 1:
-                    if "default" == param[0]:
-                        default = param[1]
-                    elif "type" == param[0]:
-                        _type = param[1]
-                    else:
-                        properties[param[0]] = param[1]
-                else:
-                    if num == 0 and param[0]:
-                        _type = param[0]
-            table_def["attrs"].append(
-                {
-                    "name": column_name,
-                    "default": default,
-                    "type": _type,
-                    "properties": properties,
-                }
-            )
-        return table_def
 
     def visit_attr_def(self, node, visited_children):
         """Makes a dict of the section (as key) and the key/value pairs."""

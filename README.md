@@ -171,12 +171,16 @@ For model from point 1 (above) library will produce the result:
 
 ## TODO: in next Release
 
-1. Add more tests for supported models (and fix existed not covered cases): Django ORM, Pydantic, Enums, Dataclasses, SQLAlchemy Models, GinoORM models, TortoiseORM models, PonyORM, Pydal tables definitions
+1. Add more tests for supported models (and fix existed not covered cases): Django ORM, Pydantic, Enums, Dataclasses, SQLAlchemy Models, GinoORM models, TortoiseORM models, PonyORM, for lists
 2. Add support for SQLAlchemy Core Tables
 3. Add support for Piccolo ORM models
 
 
 ## Changelog
+**v0.5.0**
+1. Added base support for Pydal tables definition
+2. Added support for python list syntax like []
+
 **v0.4.0**
 1. return tuples (multiple values) is parsed correctly now
 2. symbols like `*&^%$#!±~`§<>` now does not cause any errors
