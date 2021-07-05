@@ -2,22 +2,22 @@
 
 ![badge1](https://img.shields.io/pypi/v/py-models-parser) ![badge2](https://img.shields.io/pypi/l/py-models-parser) ![badge3](https://img.shields.io/pypi/pyversions/py-models-parser) ![workflow](https://github.com/xnuinside/py-models-parser/actions/workflows/main.yml/badge.svg)
 
-
 It's as second Parser that done by me, first is a https://github.com/xnuinside/simple-ddl-parser for SQL DDL with different dialects.
 
-Py-Models-Parser can parse & extract information from models:
+Py-Models-Parser can parse & extract information from models & table definitions:
 
-- Sqlalchemy ORM,
-- Gino ORM,
-- Tortoise ORM,
-- Django ORM Model,
-- Pydantic,
-- Python Enum,
-- Pony ORM,
-- Python Dataclasses
-- pure Python Classes
+- Sqlalchemy ORM (https://docs.sqlalchemy.org/en/14/orm/),
+- Gino ORM (https://python-gino.org/),
+- Tortoise ORM (https://tortoise-orm.readthedocs.io/en/latest/),
+- Django ORM Model (https://docs.djangoproject.com/en/3.2/topics/db/queries/),
+- Pydantic (https://pydantic-docs.helpmanual.io/),
+- Python Enum (https://docs.python.org/3/library/enum.html),
+- Pony ORM (https://ponyorm.org/),
+- Pydal Tables definitions (http://www.web2py.com/books/default/chapter/29/06/the-database-abstraction-layer#The-DAL-A-quick-tour),
+- Python Dataclasses (https://docs.python.org/3/library/dataclasses.html),
+- pure Python Classes (https://docs.python.org/3/tutorial/classes.html#class-objects)
 
-Number of supported models will be increased, check 'TODO' section.
+Number of supported models will be increased, check 'TODO' section, if you want to have support of different models types - please open the issue.
 
 Py-Models-Parser written with PEG parser and it's python implementation - parsimonious. It's pretty new and I did not cover all possible test cases, so if you will have an issue  - please just open an issue in this case with example, I will fix it as soon as possible.
 
@@ -171,10 +171,10 @@ For model from point 1 (above) library will produce the result:
 
 ## TODO: in next Release
 
-1. Add more tests for supported models (and fix existed not covered cases): Django ORM, Pydantic, Enums, Dataclasses, SQLAlchemy Models, GinoORM models, TortoiseORM models
+1. Add more tests for supported models (and fix existed not covered cases): Django ORM, Pydantic, Enums, Dataclasses, SQLAlchemy Models, GinoORM models, TortoiseORM models, PonyORM, Pydal tables definitions
 2. Add support for SQLAlchemy Core Tables
-3. Add support for Pony ORM models
-4. Add support for Piccolo ORM models
+3. Add support for Piccolo ORM models
+
 
 ## Changelog
 **v0.4.0**

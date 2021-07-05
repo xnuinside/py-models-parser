@@ -1,3 +1,6 @@
+**v0.5.0**
+1. Added base support for Pydal tables definition
+
 **v0.4.0**
 1. return tuples (multiple values) is parsed correctly now
 2. symbols like `*&^%$#!±~`§<>` now does not cause any errors
