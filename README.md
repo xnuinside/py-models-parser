@@ -177,8 +177,12 @@ For model from point 1 (above) library will produce the result:
 
 
 ## Changelog
+**v0.5.1**
+Fixes:
+1. Sometimes multiple parents names in "parents" output was joined in one string - fixed.
+
 **v0.5.0**
-1. Added base support for Pydal tables definition
+1. Added base support for Pydal tables definitions
 2. Added support for python list syntax like []
 
 **v0.4.0**

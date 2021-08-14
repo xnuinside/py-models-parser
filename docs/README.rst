@@ -201,10 +201,16 @@ TODO: in next Release
 Changelog
 ---------
 
+**v0.5.1**
+Fixes:
+
+
+#. Sometimes multiple parents names in "parents" output was joined in one string - fixed.
+
 **v0.5.0**
 
 
-#. Added base support for Pydal tables definition
+#. Added base support for Pydal tables definitions
 #. Added support for python list syntax like []
 
 **v0.4.0**

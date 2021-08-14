@@ -18,7 +18,9 @@ class Visitor(NodeVisitor):
             for chld_node in node.children[2].children[0].children[1:-1]:
                 parent = chld_node.text.strip()
                 if parent:
-                    parents.append(parent)
+                    parent = parent.split(",")
+                    for elem in parent:
+                        parents.append(elem.strip())
         except IndexError:
             pass
 
@@ -51,7 +53,23 @@ class Visitor(NodeVisitor):
         properties = {}
         orm_triggers = ["Column", "Field", "relationship", "ForeignKey"]
         pony_orm_fields = ["Required", "Set", "Optional", "PrimaryKey"]
+        ormar_types = [
+            "Integer",
+            "String",
+            "Text",
+            "Boolean",
+            "BigInteger",
+            "SmallInteger",
+            "Float",
+            "Decimal",
+            "Date",
+            "Time",
+            "JSON",
+            "DateTime",
+            "LargeBinary",
+        ]
         orm_triggers.extend(pony_orm_fields)
+        orm_triggers.extend(ormar_types)
         for i in orm_triggers:
             if i in text:
                 not_orm = False
@@ -71,9 +89,7 @@ class Visitor(NodeVisitor):
                     properties["foreign_key"] = text[0]
                 elif i in pony_orm_fields:
                     # mean it is a Pony ORM
-                    _type, properties = get_pony_orm_info(
-                        text, i, base_text, properties
-                    )
+                    _type, properties = get_pony_orm_info(text, i, properties)
                 else:
                     _type = text[0]
                 if i == "relationship":
@@ -227,9 +243,24 @@ def process_no_name_attrs(final_child: Dict, child: Dict) -> None:
     return final_child
 
 
-def get_pony_orm_info(
-    text: list, field: str, base_text: str, properties: Dict
-) -> Tuple:
+def get_ormar_orm_info(text: list, field: str, properties: Dict) -> Tuple:
+
+    if field == "Required":
+        properties["nullable"] = False
+    elif field == "PrimaryKey":
+        properties["primary_key"] = True
+    elif field == "Optional":
+        properties["nullable"] = True
+    elif field == "Set":
+        # relationship
+        properties["relationship"] = True
+        properties["foreign_key"] = text[0]
+    _type = text[0]
+
+    return _type, properties
+
+
+def get_pony_orm_info(text: list, field: str, properties: Dict) -> Tuple:
     if field == "Required":
         properties["nullable"] = False
     elif field == "PrimaryKey":

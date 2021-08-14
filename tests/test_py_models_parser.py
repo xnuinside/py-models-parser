@@ -307,7 +307,7 @@ def test_parse_from_file_dataclass():
                 {"default": '"video"', "name": "video", "properties": {}, "type": None},
             ],
             "name": "MaterialType",
-            "parents": ["str, Enum"],
+            "parents": ["str", "Enum"],
             "properties": {},
         },
         {
