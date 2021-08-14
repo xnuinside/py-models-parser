@@ -48,7 +48,7 @@ def test_int_enum():
                 {"default": "'TEXT'", "name": "TEXT", "properties": {}, "type": None},
             ],
             "name": "ContentType",
-            "parents": ["str, Enum"],
+            "parents": ["str", "Enum"],
             "properties": {},
         },
         {

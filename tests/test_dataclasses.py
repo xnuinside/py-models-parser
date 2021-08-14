@@ -14,7 +14,7 @@ def test_dataclasses():
                 {"default": "'video'", "name": "video", "properties": {}, "type": None},
             ],
             "name": "MaterialType",
-            "parents": ["str, Enum"],
+            "parents": ["str", "Enum"],
             "properties": {},
         },
         {
