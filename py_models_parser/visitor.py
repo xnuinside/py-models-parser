@@ -3,6 +3,11 @@ from typing import Dict, List, Tuple, Union
 from parsimonious.nodes import NodeVisitor
 
 from py_models_parser.parsers.pydal import process_pydal_table_definition
+from py_models_parser.types import (
+    orm_triggers,
+    ormar_and_piccollo_types,
+    pony_orm_fields,
+)
 
 
 class Visitor(NodeVisitor):
@@ -46,30 +51,26 @@ class Visitor(NodeVisitor):
                 pass
         return text
 
+    def ormar_and_piccollo_info(
+        self, text: List[str], i: str, properties: Dict
+    ) -> Tuple[str, Dict]:
+        default = None
+        _type = i
+        for text_str in text:
+            data = text_str.split("=")
+            if len(data) == 2:
+                if data[0] == "default":
+                    default = data[1].strip()
+                else:
+                    properties[data[0].strip()] = data[1].strip()
+        return _type, properties, default
+
     def extract_orm_attr(self, text: str):
         _type = None
         default = None
         not_orm = True
         properties = {}
-        orm_triggers = ["Column", "Field", "relationship", "ForeignKey"]
-        pony_orm_fields = ["Required", "Set", "Optional", "PrimaryKey"]
-        ormar_types = [
-            "Integer",
-            "String",
-            "Text",
-            "Boolean",
-            "BigInteger",
-            "SmallInteger",
-            "Float",
-            "Decimal",
-            "Date",
-            "Time",
-            "JSON",
-            "DateTime",
-            "LargeBinary",
-        ]
-        orm_triggers.extend(pony_orm_fields)
-        orm_triggers.extend(ormar_types)
+
         for i in orm_triggers:
             if i in text:
                 not_orm = False
@@ -85,11 +86,15 @@ class Visitor(NodeVisitor):
                     prop_index = 0
                 elif i == "ForeignKey":
                     # mean it is a Django model.ForeignKey
-                    _type = "serial"
+                    _type = f"{text[0]}.id"
                     properties["foreign_key"] = text[0]
                 elif i in pony_orm_fields:
                     # mean it is a Pony ORM
                     _type, properties = get_pony_orm_info(text, i, properties)
+                elif i in ormar_and_piccollo_types:
+                    _type, properties, default = self.ormar_and_piccollo_info(
+                        text, i, properties
+                    )
                 else:
                     _type = text[0]
                 if i == "relationship":
@@ -169,6 +174,8 @@ class Visitor(NodeVisitor):
             final_item["properties"]["init"] = []
         elif "tablename" in attr["name"]:
             final_item["properties"]["table_name"] = attr["default"]
+        elif attr["name"] in ["__database__", "__metadata__"]:
+            final_item["properties"][attr["name"]] = attr["default"]
         elif "table_args" in attr["name"]:
             final_item["properties"][attr["name"]] = attr["type"] or attr["default"]
         else:

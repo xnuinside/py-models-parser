@@ -1,3 +1,9 @@
+**v0.6.0**
+Features:
+1. Added support for Encode ORM models https://github.com/encode/orm
+2. Added support for Piccolo ORM models https://piccolo-orm.readthedocs.io/en/latest/piccolo/schema/defining.html
+
+
 **v0.5.1**
 Fixes:
 1. Sometimes multiple parents names in "parents" output was joined in one string - fixed.

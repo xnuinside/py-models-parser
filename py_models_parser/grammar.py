@@ -2,8 +2,9 @@ from parsimonious.grammar import Grammar
 
 grammar = Grammar(
     r"""
-    expr = (class / if_else/ call_result / return / attr_def / emptyline / funct_def)*
+    expr = (class / if_else/ call_result / return / comments / attr_def / emptyline / funct_def)*
     return = "return" (id* ","*)*
+    comments = "\#" (text / list)
     if_else= ("if" (compare/ id / attr_def) ":")/("elif" (id/attr_def) ":")/("else" ":")
     compare = (call_result / id / args /args_in_brackets  ) operator (call_result/id/args_in_brackets/args)
     operator = "==" / "!=" / ">" / "<" / ">=" / "<="
