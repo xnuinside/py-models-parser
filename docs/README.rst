@@ -28,10 +28,12 @@ Py-Models-Parser can parse & extract information from models & table definitions
 * Sqlalchemy ORM (https://docs.sqlalchemy.org/en/14/orm/),
 * Gino ORM (https://python-gino.org/),
 * Tortoise ORM (https://tortoise-orm.readthedocs.io/en/latest/),
+* Encode ORM (https://github.com/encode/orm)
 * Django ORM Model (https://docs.djangoproject.com/en/3.2/topics/db/queries/),
 * Pydantic (https://pydantic-docs.helpmanual.io/),
 * Python Enum (https://docs.python.org/3/library/enum.html),
 * Pony ORM (https://ponyorm.org/),
+* Piccolo ORM models (https://piccolo-orm.readthedocs.io/en/latest/piccolo/schema/defining.html),
 * Pydal Tables definitions (http://www.web2py.com/books/default/chapter/29/06/the-database-abstraction-layer#The-DAL-A-quick-tour),
 * Python Dataclasses (https://docs.python.org/3/library/dataclasses.html),
 * pure Python Classes (https://docs.python.org/3/tutorial/classes.html#class-objects)
@@ -194,12 +196,18 @@ TODO: in next Release
 ---------------------
 
 
-#. Add more tests for supported models (and fix existed not covered cases): Django ORM, Pydantic, Enums, Dataclasses, SQLAlchemy Models, GinoORM models, TortoiseORM models, PonyORM, for lists
+#. Add more tests for supported models
 #. Add support for SQLAlchemy Core Tables
-#. Add support for Piccolo ORM models
 
 Changelog
 ---------
+
+**v0.6.0**
+Features:
+
+
+#. Added support for Encode ORM models https://github.com/encode/orm
+#. Added support for Piccolo ORM models https://piccolo-orm.readthedocs.io/en/latest/piccolo/schema/defining.html
 
 **v0.5.1**
 Fixes:

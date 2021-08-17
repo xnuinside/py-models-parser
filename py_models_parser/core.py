@@ -62,10 +62,58 @@ def output(input: str):
     return output
 
 
+def process_models_attr(model: Dict, models_by_name: Dict) -> Dict:
+    for attr in model["attrs"]:
+        if (
+            attr.get("properties")
+            and attr["properties"].get("foreign_key")
+            and not attr["properties"].get("through")
+        ):
+            split_type = attr["type"].split(".")
+            target_model = models_by_name.get(split_type[0])
+            if target_model:
+                key = [
+                    attr
+                    for attr in target_model["attrs"]
+                    if attr["name"] == split_type[1]
+                ]
+                if not key:
+                    _type = "serial"
+                else:
+                    _type = key[0]["type"]
+                attr["type"] = _type
+    return model
+
+
+def clear_parents(model: Dict) -> Dict:
+
+    parents = []
+
+    for parent in model["parents"]:
+        if "tablename" in parent:
+            name = parent.split("=")
+            model["properties"]["table_name"] = name[1]
+            continue
+        parents.append(parent)
+
+    model["parents"] = parents
+
+    return model
+
+
+def format_ouput(output: List[Dict]):
+    models_by_name = {model["name"]: model for model in output}
+    for model in output:
+        model = process_models_attr(model, models_by_name)
+        model = clear_parents(model)
+    return output
+
+
 def parse(models: str) -> List[Dict]:
     models = pre_processing(models)
     result = grammar.parse(models)
     result = output(result)
+    result = format_ouput(result)
     return result
 
 
