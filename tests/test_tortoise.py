@@ -92,7 +92,6 @@ def test_tortoise_two_models():
 
 
 def test_full_tortoise_example_from_docs():
-
     models_str = '''
     """
     This example demonstrates most basic operations with single model

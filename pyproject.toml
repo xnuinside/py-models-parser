@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "py-models-parser"
-version = "0.6.0"
+version = "0.7.0"
 description = "Parser for Different Python Models (Pydantic, Enums, ORMs: Tortoise, SqlAlchemy, GinoORM, PonyORM, Pydal tables) to extract information about columns(attrs), model, table args,etc in one format."
 authors = ["Iuliia Volkova <xnuinside@gmail.com>"]
 license = "MIT"
@@ -14,20 +14,26 @@ classifiers = [
     "Topic :: Software Development :: Libraries",
     "Topic :: Utilities",
     "Topic :: Software Development :: Code Generators",
-    "Topic :: Software Development :: Libraries :: Python Modules"
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11"
 ]
 
 [tool.poetry.dependencies]
-python = "^3.6"
-parsimonious = "^0.8.1"
+python = "^3.7"
+parsimonious = "^0.10.0"
 
 [tool.poetry.dev-dependencies]
-pytest = "^5.2"
-twine = "^3.4.1"
-m2r = "^0.2.1"
+pytest = "^7.4"
+twine = "^4.0"
+m2r = "^0.3.1"
 
 [tool.poetry.scripts]
 pmp = 'py_models_parser.cli:main'
+
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

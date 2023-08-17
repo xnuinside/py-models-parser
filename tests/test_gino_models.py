@@ -111,7 +111,6 @@ def test_multiple_class_defs():
 
 
 def test_complex_syntax_in_columns_and_table_args():
-
     models_str = """from gino import Gino
 
         db = Gino()

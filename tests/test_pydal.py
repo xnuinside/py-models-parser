@@ -47,7 +47,6 @@ def test_simple_pydal_example():
 
 
 def test_two_tables_type_in_args():
-
     model = """
     #!/usr/bin/env python3
 
@@ -101,7 +100,6 @@ def test_two_tables_type_in_args():
 
 
 def test_table_properties():
-
     model = """
     #!/usr/bin/env python3
 
@@ -284,7 +282,6 @@ def test_definition_inside_methods_works_well():
 
 
 def test_list_in_primary_key():
-
     model = """
     db.define_table('account',
                     Field('accnum', 'integer'),
