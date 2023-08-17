@@ -202,6 +202,13 @@ TODO: in next Release
 Changelog
 ---------
 
+**v0.7.0**
+Updates:
+
+
+#. Added support for latest version of parsimonious.
+   Library now works with Python 3.11.
+
 **v0.6.0**
 Features:
 

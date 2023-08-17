@@ -178,6 +178,12 @@ For model from point 1 (above) library will produce the result:
 
 
 ## Changelog
+**v0.7.0**
+Updates:
+1. Added support for latest version of parsimonious.
+Library now works with Python 3.11.
+
+
 **v0.6.0**
 Features:
 1. Added support for Encode ORM models https://github.com/encode/orm
