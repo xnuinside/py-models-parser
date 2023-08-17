@@ -155,7 +155,6 @@ class Visitor(NodeVisitor):
             left = left.split(":")[0].strip()
         attr = {"attr": {"name": left, "type": _type, "default": default}}
         for children in visited_children:
-
             if isinstance(children, list):
                 if isinstance(children[-1], list):
                     if "default" in children[-1][-1]:
@@ -251,7 +250,6 @@ def process_no_name_attrs(final_child: Dict, child: Dict) -> None:
 
 
 def get_ormar_orm_info(text: list, field: str, properties: Dict) -> Tuple:
-
     if field == "Required":
         properties["nullable"] = False
     elif field == "PrimaryKey":

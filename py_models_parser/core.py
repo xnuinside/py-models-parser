@@ -86,7 +86,6 @@ def process_models_attr(model: Dict, models_by_name: Dict) -> Dict:
 
 
 def clear_parents(model: Dict) -> Dict:
-
     parents = []
 
     for parent in model["parents"]:

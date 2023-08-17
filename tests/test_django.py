@@ -2,7 +2,6 @@ from py_models_parser import parse
 
 
 def test_model_with_foreign():
-
     model = """from django.db import models
 
     class Musician(models.Model):
@@ -246,7 +245,6 @@ class Ox(models.Model):
 
 
 def test_two_tables_meta():
-
     model = """
     from django.db import models
 

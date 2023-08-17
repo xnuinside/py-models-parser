@@ -2,7 +2,6 @@ from py_models_parser import parse
 
 
 def test_simple_piccolo():
-
     model = """
     class Band(Table, tablename="music_band"):
         id = UUID(primary_key=True)

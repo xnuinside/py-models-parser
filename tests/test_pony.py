@@ -72,7 +72,6 @@ class Car(db.Entity):
 
 
 def test_primary_and_optional():
-
     model = """
     from pony.orm import *
 

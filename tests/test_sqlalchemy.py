@@ -43,7 +43,6 @@ def test_simple_example():
 
 
 def test_foreign_keys():
-
     models_str = """
     class Person(db.Model):
         id = db.Column(db.Integer, primary_key=True)
