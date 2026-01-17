@@ -178,6 +178,18 @@ For model from point 1 (above) library will produce the result:
 
 
 ## Changelog
+**v1.0.0**
+Breaking Changes:
+1. Dropped support for Python 3.7 and 3.8
+2. Minimum required Python version is now 3.9
+
+New Features:
+1. Added support for Python 3.12 and 3.13
+2. Added OpenAPI 3.0/Swagger specification parser (parse_openapi, parse_openapi_file)
+3. Added tox for multi-version testing
+4. Added ARCHITECTURE.md with project documentation
+5. Added pyyaml dependency for OpenAPI parsing
+
 **v0.7.0**
 Updates:
 1. Added support for latest version of parsimonious.
