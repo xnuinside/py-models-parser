@@ -36,7 +36,8 @@ Py-Models-Parser can parse & extract information from models & table definitions
 * Piccolo ORM models (https://piccolo-orm.readthedocs.io/en/latest/piccolo/schema/defining.html),
 * Pydal Tables definitions (http://www.web2py.com/books/default/chapter/29/06/the-database-abstraction-layer#The-DAL-A-quick-tour),
 * Python Dataclasses (https://docs.python.org/3/library/dataclasses.html),
-* pure Python Classes (https://docs.python.org/3/tutorial/classes.html#class-objects)
+* pure Python Classes (https://docs.python.org/3/tutorial/classes.html#class-objects),
+* OpenAPI 3.0/Swagger specifications (https://swagger.io/specification/)
 
 Number of supported models will be increased, check 'TODO' section, if you want to have support of different models types - please open the issue.
 
@@ -124,6 +125,32 @@ Library detect automaticaly that type of models you tries to parse. You can chec
        result = parse_from_file(file_path)
 
 
+#. Parse OpenAPI/Swagger specifications:
+
+.. code-block:: python
+
+
+       from py_models_parser import parse_openapi, parse_openapi_file
+
+       # Parse from string
+       openapi_spec = """
+       openapi: "3.0.0"
+       components:
+         schemas:
+           User:
+             type: object
+             properties:
+               id:
+                 type: integer
+               name:
+                 type: string
+       """
+       result = parse_openapi(openapi_spec)
+
+       # Or parse from file (supports both YAML and JSON)
+       result = parse_openapi_file("path/to/openapi.yaml")
+
+
 #. Parse models from file with command line
 
 .. code-block:: bash
@@ -201,6 +228,19 @@ TODO: in next Release
 
 Changelog
 ---------
+
+**v1.0.0**
+Breaking Changes:
+
+#. Dropped support for Python 3.7 and 3.8
+#. Minimum required Python version is now 3.9
+
+New Features:
+
+#. Added support for Python 3.12 and 3.13
+#. Added OpenAPI 3.0/Swagger specification parser (parse_openapi, parse_openapi_file)
+#. Added tox for multi-version testing
+#. Added ARCHITECTURE.md with project documentation
 
 **v0.7.0**
 Updates:
