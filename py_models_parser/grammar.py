@@ -4,7 +4,7 @@ grammar = Grammar(
     r"""
     expr = (class / if_else/ call_result / return / comments / attr_def / emptyline / funct_def)*
     return = "return" (id* ","*)*
-    comments = "\#" (text / list)
+    comments = r"\#" (text / list)
     if_else= ("if" (compare/ id / attr_def) ":")/("elif" (id/attr_def) ":")/("else" ":")
     compare = (call_result / id / args /args_in_brackets  ) operator (call_result/id/args_in_brackets/args)
     operator = "==" / "!=" / ">" / "<" / ">=" / "<="
@@ -25,7 +25,7 @@ grammar = Grammar(
     id          = (((dot_id / text)+ ) *  / dot_id / text) ws?
     dot_id      = (text ".")*text
     intend      = "    " / "\t" / "\n"
-    text        = !"class" ~"['_A-Z 0-9{}_\"\-\/\$<%>\+\-\w*&^%$#!±~`§]*"i
+    text        = !"class" ~r"['_A-Z 0-9{}_\"\-\/\$<%>\+\-\w*&^%$#!±~`§]*"i
     ws          = ~"\\s*"
     emptyline   = ws+
 """
