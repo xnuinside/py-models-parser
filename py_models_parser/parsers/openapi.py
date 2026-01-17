@@ -34,6 +34,19 @@ OPENAPI_FORMAT_MAP = {
     "byte": "bytes",
 }
 
+# Property mappings from OpenAPI to internal format
+PROPERTY_MAPPINGS = {
+    "description": "description",
+    "enum": "enum",
+    "minimum": "minimum",
+    "maximum": "maximum",
+    "minLength": "min_length",
+    "maxLength": "max_length",
+    "pattern": "pattern",
+    "nullable": "nullable",
+    "format": "format",
+}
+
 
 def _resolve_ref(ref: str, spec: Dict) -> Optional[Dict]:
     """Resolve a $ref pointer to its definition."""
@@ -50,6 +63,34 @@ def _resolve_ref(ref: str, spec: Dict) -> Optional[Dict]:
     return current
 
 
+def _get_ref_type(schema: Dict, spec: Dict, visited: set) -> str:
+    """Handle $ref type resolution."""
+    ref = schema["$ref"]
+    if ref in visited:
+        return "Any"
+    visited.add(ref)
+
+    ref_schema = _resolve_ref(ref, spec)
+    if ref_schema:
+        return ref.split("/")[-1]
+    return "Any"
+
+
+def _get_composite_type(
+    sub_schemas: List[Dict],
+    spec: Dict,
+    visited: set
+) -> str:
+    """Handle allOf/oneOf/anyOf composite types."""
+    types = [
+        _get_type_from_schema(sub_schema, spec, visited)
+        for sub_schema in sub_schemas
+    ]
+    if len(types) == 1:
+        return types[0]
+    return f"Union[{', '.join(types)}]"
+
+
 def _get_type_from_schema(
     schema: Dict,
     spec: Dict,
@@ -60,31 +101,16 @@ def _get_type_from_schema(
         visited = set()
 
     if "$ref" in schema:
-        ref = schema["$ref"]
-        if ref in visited:
-            return "Any"
-        visited.add(ref)
-
-        ref_schema = _resolve_ref(ref, spec)
-        if ref_schema:
-            ref_name = ref.split("/")[-1]
-            return ref_name
-        return "Any"
-
-    schema_type = schema.get("type", "object")
+        return _get_ref_type(schema, spec, visited)
 
     if "allOf" in schema:
-        types = []
-        for sub_schema in schema["allOf"]:
-            types.append(_get_type_from_schema(sub_schema, spec, visited))
-        return types[0] if len(types) == 1 else f"Union[{', '.join(types)}]"
+        return _get_composite_type(schema["allOf"], spec, visited)
 
     if "oneOf" in schema or "anyOf" in schema:
         sub_schemas = schema.get("oneOf") or schema.get("anyOf")
-        types = []
-        for sub_schema in sub_schemas:
-            types.append(_get_type_from_schema(sub_schema, spec, visited))
-        return f"Union[{', '.join(types)}]"
+        return _get_composite_type(sub_schemas, spec, visited)
+
+    schema_type = schema.get("type", "object")
 
     if schema_type == "array":
         items = schema.get("items", {})
@@ -102,6 +128,24 @@ def _get_type_from_schema(
     return OPENAPI_TYPE_MAP.get(schema_type, "Any")
 
 
+def _extract_attr_properties(
+    prop_schema: Dict,
+    prop_name: str,
+    required_fields: List[str]
+) -> Dict:
+    """Extract properties from a single attribute schema."""
+    properties = {}
+
+    if prop_name in required_fields:
+        properties["required"] = True
+
+    for openapi_key, internal_key in PROPERTY_MAPPINGS.items():
+        if openapi_key in prop_schema:
+            properties[internal_key] = prop_schema[openapi_key]
+
+    return properties
+
+
 def _extract_properties(
     schema: Dict,
     spec: Dict,
@@ -116,42 +160,10 @@ def _extract_properties(
             "name": prop_name,
             "type": _get_type_from_schema(prop_schema, spec),
             "default": prop_schema.get("default"),
-            "properties": {},
+            "properties": _extract_attr_properties(
+                prop_schema, prop_name, required_fields
+            ),
         }
-
-        if prop_name in required_fields:
-            attr["properties"]["required"] = True
-
-        if "description" in prop_schema:
-            attr["properties"]["description"] = prop_schema["description"]
-
-        if "enum" in prop_schema:
-            attr["properties"]["enum"] = prop_schema["enum"]
-
-        if "minimum" in prop_schema:
-            attr["properties"]["minimum"] = prop_schema["minimum"]
-
-        if "maximum" in prop_schema:
-            attr["properties"]["maximum"] = prop_schema["maximum"]
-
-        if "minLength" in prop_schema:
-            attr["properties"]["min_length"] = prop_schema["minLength"]
-
-        if "maxLength" in prop_schema:
-            attr["properties"]["max_length"] = prop_schema["maxLength"]
-
-        if "pattern" in prop_schema:
-            attr["properties"]["pattern"] = prop_schema["pattern"]
-
-        if "nullable" in prop_schema:
-            attr["properties"]["nullable"] = prop_schema["nullable"]
-
-        if "format" in prop_schema:
-            attr["properties"]["format"] = prop_schema["format"]
-
-        if not attr["properties"]:
-            attr["properties"] = {}
-
         attrs.append(attr)
 
     return attrs
