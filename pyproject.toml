@@ -4,7 +4,7 @@ version = "1.0.0"
 description = "Parser for Different Python Models (Pydantic, Enums, ORMs: Tortoise, SqlAlchemy, GinoORM, PonyORM, Pydal tables) to extract information about columns(attrs), model, table args,etc in one format."
 authors = ["Iuliia Volkova <xnuinside@gmail.com>"]
 license = "MIT"
-readme = "docs/README.rst"
+readme = "README.md"
 homepage = "https://github.com/xnuinside/py-models-parser"
 repository = "https://github.com/xnuinside/py-models-parser"
 classifiers = [
@@ -25,18 +25,18 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.9"
 parsimonious = "^0.10.0"
-pyyaml = "^6.0"
+pyyaml = "^6.0.1"
 
-[tool.poetry.dev-dependencies]
-pytest = "^7.4"
-twine = "^4.0"
-m2r = "^0.3.1"
-tox = "^4.0"
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0"
+twine = "^6.0"
 
 [tool.poetry.scripts]
 pmp = 'py_models_parser.cli:main'
 
-
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

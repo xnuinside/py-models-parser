@@ -147,6 +147,7 @@ class Visitor(NodeVisitor):
         left = node.children[1].children[0].children[0].text.strip()
         default = None
         _type = None
+        annotation_type = None
         if "def " in left:
             attr = {"attr": {"name": None, "type": _type, "default": default}}
             return attr
@@ -160,10 +161,13 @@ class Visitor(NodeVisitor):
                     if "default" in children[-1][-1]:
                         attr["attr"]["default"] = children[-1][-1]["default"]
                         attr["attr"]["properties"] = children[-1][-1]["properties"]
-                        if children[-1][-1]["type"] is not None:
+                        # Only override type if not already set from annotation
+                        if children[-1][-1]["type"] and not annotation_type:
                             attr["attr"]["type"] = children[-1][-1]["type"]
                 elif isinstance(children[-1], dict) and "type" in children[-1]:
-                    attr["attr"]["type"] = children[-1]["type"]
+                    # Type from annotation (e.g., ": str")
+                    annotation_type = children[-1]["type"]
+                    attr["attr"]["type"] = annotation_type
         return attr
 
     @staticmethod
@@ -177,6 +181,9 @@ class Visitor(NodeVisitor):
             final_item["properties"][attr["name"]] = attr["default"]
         elif "table_args" in attr["name"]:
             final_item["properties"][attr["name"]] = attr["type"] or attr["default"]
+        elif attr["name"] == "model_config":
+            # Pydantic v2 model configuration
+            final_item["properties"]["model_config"] = attr["default"]
         else:
             if final_item["properties"].get("init") is not None:
                 final_item["properties"]["init"].append(attr)

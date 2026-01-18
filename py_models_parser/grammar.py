@@ -12,20 +12,23 @@ grammar = Grammar(
     class_def   = intend? class_name args? ":"* ws?
     attr_def  = intend? id type? ("=" (right_part))* ws?
     right_part =  (id args_in_brackets) / string / args  / call_result / args_in_brackets / id / text
-    type = ":" ( (id args_in_brackets) / id)
+    type = ":" union_type
+    union_type = type_part (ws? "|" ws? type_part)*
+    type_part = (id args_in_brackets) / id
     string = one_quote_str / double_quotes_str
     one_quote_str = ~"\'[^\']+\'"i
     double_quotes_str = ~'"[^\"]+"'i
     list = "[" (call_result / attr_def / args / id / text)* ","* "]"
     funct_def = intend? "def" id args? ":"* ws?
-    args_in_brackets = "[" ((id/string)* ","* )* "]"
+    args_in_brackets = "[" ((type_with_brackets / id / string)* ","* )* "]"
+    type_with_brackets = id args_in_brackets
     args        = "(" (( list / call_result / args  / attr_def / id  )* ","* )* ")"
     call_result = id args ws?
     class_name  = "class" id
     id          = (((dot_id / text)+ ) *  / dot_id / text) ws?
     dot_id      = (text ".")*text
     intend      = "    " / "\t" / "\n"
-    text        = !"class" ~r"['_A-Z 0-9{}_\"\-\/\$<%>\+\-\w*&^%$#!±~`§]*"i
+    text        = !"class" ~r"['_A-Z 0-9{}_\"\-\/\$<%>\+\-\w*&^%$#!±~`§@]*"i
     ws          = ~"\\s*"
     emptyline   = ws+
 """
