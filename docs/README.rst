@@ -30,7 +30,7 @@ Py-Models-Parser can parse & extract information from models & table definitions
 * Tortoise ORM (https://tortoise-orm.readthedocs.io/en/latest/),
 * Encode ORM (https://github.com/encode/orm)
 * Django ORM Model (https://docs.djangoproject.com/en/3.2/topics/db/queries/),
-* Pydantic (https://pydantic-docs.helpmanual.io/),
+* Pydantic v1 and v2 (https://docs.pydantic.dev/),
 * Python Enum (https://docs.python.org/3/library/enum.html),
 * Pony ORM (https://ponyorm.org/),
 * Piccolo ORM models (https://piccolo-orm.readthedocs.io/en/latest/piccolo/schema/defining.html),
@@ -239,7 +239,9 @@ New Features:
 
 #. Added support for Python 3.12 and 3.13
 #. Added OpenAPI 3.0/Swagger specification parser (parse_openapi, parse_openapi_file)
-#. Added tox for multi-version testing
+#. Added Pydantic 2.x support (union types with ``|``, ``Field()`` with constraints, ``model_config`` with ``ConfigDict``)
+#. Added support for Python 3.10+ union type syntax (PEP 604): ``int | None``, ``list[str] | None``
+#. Added support for nested generic types: ``list[dict[str, str]]``
 #. Added ARCHITECTURE.md with project documentation
 
 **v0.7.0**

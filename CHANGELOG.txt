@@ -6,9 +6,11 @@ Breaking Changes:
 New Features:
 1. Added support for Python 3.12 and 3.13
 2. Added OpenAPI 3.0/Swagger specification parser (parse_openapi, parse_openapi_file)
-3. Added tox for multi-version testing
-4. Added ARCHITECTURE.md with project documentation
-5. Added pyyaml dependency for OpenAPI parsing
+3. Added Pydantic 2.x support (union types with |, Field() with constraints, model_config with ConfigDict)
+4. Added support for Python 3.10+ union type syntax (PEP 604): int | None, list[str] | None
+5. Added support for nested generic types: list[dict[str, str]]
+6. Added ARCHITECTURE.md with project documentation
+7. Added pyyaml dependency for OpenAPI parsing
 
 **v0.7.0**
 Updates:
